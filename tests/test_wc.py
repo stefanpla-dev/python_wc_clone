@@ -2,6 +2,8 @@ import subprocess
 import tempfile
 import os
 
+#Idea - test to validate flag order in output matches input? Come back to this.
+
 def test_count_bytes():
     '''Test the -c option (byte count).'''
     #Create a temporary file with specific content.

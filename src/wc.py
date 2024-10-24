@@ -31,26 +31,28 @@ def main():
     #Parse the arguments.
     args=parser.parse_args()
     file_input=args.file
+    #Initialize empty output.
     output=[]
 
-    #Handle -c flag for byte count.
-    if args.c:
-        if not file_input:
-            print('Error: You must provide a file path when using the -c option.')
-            sys.exit(1)
-        byte_count=count_bytes(file_input)
-        output.append(f'{byte_count}')
+    #Capture the order of arguments by using the command-line args directly.
+    flags_in_order=sys.argv[1:-1]
 
-    #Handle -l flag for line count.
-    if args.l:
-        if not file_input:
-            print('Error: You must provide a file path when using the -l option.')
-            sys.exit(1)
-        line_count=count_lines(file_input)
-        output.append(f'{line_count}')
+    if not file_input:
+        print('Error: You must provide a file path.')
+        sys.exit(1)
+    
+    #Process the arguments in the order provided by the user.
+    for flag in flags_in_order:
+        if flag=='-c':
+            byte_count=count_bytes(file_input)
+            output.append(f'{byte_count}')
+        elif flag=='-l':
+            line_count=count_lines(file_input)
+            output.append(f'{line_count}')
+    
+    #Append the filename to the output.
+    output.append(file_input)
 
-    #Add file name to the output.
-    output.append(args.file)
     #Print result.
     print(' '.join(output))
 
