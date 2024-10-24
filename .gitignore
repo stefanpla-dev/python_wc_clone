@@ -1,5 +1,28 @@
+# Ignore the virtual environment directory
 venv/
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
+
+# SQLite database file
 wc_results.db
+
+# Unit test cache
+*.pytest_cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Logs and local development files
+*.log
+
+# OS-specific files
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# IDE-related files (VSCode, PyCharm)
+.vscode/
+.idea/
