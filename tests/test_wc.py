@@ -41,3 +41,18 @@ def test_count_lines():
     assert output==f'{expected_line_count} {temp_file_name}'
 
     os.remove(temp_file_name)
+
+def test_count_words():
+    '''Test the -w option (word count).'''
+    with tempfile.NamedTemporaryFile(delete=False, mode='w') as temp_file:
+        temp_file.write('Hello world\nThis is a test\nPython is the best.')
+        temp_file_name=temp_file.name
+    
+    result=subprocess.run(['python', 'src/wc.py', '-w', temp_file_name], capture_output=True, text=True)
+
+    output=result.stdout.strip()
+    expected_word_count=10
+
+    assert output==f'{expected_word_count} {temp_file_name}'
+
+    os.remove(temp_file_name)
