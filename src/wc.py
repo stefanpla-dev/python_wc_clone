@@ -54,12 +54,16 @@ def main():
     if not file_input:
         print('Error: You must provide a file path.')
         sys.exit(1)
+
+    #Capture the flag order based on user input.
+    flags_in_order=[arg for arg in sys.argv[1:-1] if arg in ['-c', '-l', '-w', '-m']]
+
+    #If no flags are provided, set default flags to -c, -l, -w.
+    if not flags_in_order:
+        flags_in_order=['-c', '-l', '-w']
     
     #Initialize empty output.
     output=[]
-
-    #Capture the order of arguments by using the command-line args directly.
-    flags_in_order=sys.argv[1:-1]
 
     #Process the arguments in the order provided by the user.
     for flag in flags_in_order:
@@ -69,7 +73,7 @@ def main():
         elif flag=='-l':
             line_count=count_lines(file_input)
             output.append(f'{line_count}')
-        elif flag=='-w':
+        elif flag=='-w': 
             word_count=count_words(file_input)
             output.append(f'{word_count}')
         elif flag=='-m':

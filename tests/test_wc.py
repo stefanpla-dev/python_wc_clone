@@ -72,3 +72,19 @@ def test_count_characters():
 
     os.remove(temp_file_name)
 
+def test_default_flag_behavior():
+    '''Test the default flag behavior (-c, -l, -w printed to the command line.)'''
+    with tempfile.NamedTemporaryFile(delete=False, mode='w') as temp_file:
+        temp_file.write('Hello world.\nThis is a test of flag behavior.')
+        temp_file_name=temp_file.name
+    
+    result=subprocess.run(['python', 'src/wc.py', temp_file_name], capture_output=True, text=True)
+
+    output=result.stdout.strip()
+    expected_byte_count=len('Hello world.\nThis is a test of flag behavior.')
+    expected_line_count=2
+    expected_word_count=9
+
+    assert output==f'{expected_byte_count} {expected_line_count} {expected_word_count} {temp_file_name}'
+
+    os.remove(temp_file_name)
