@@ -1,6 +1,5 @@
 import argparse
 import sys
-import os
 
 def count_bytes(file_path):
     '''Counts the number of bytes in a given file.'''
@@ -21,25 +20,37 @@ def count_lines(file_path):
         print(f'python_wc_clone: {file_path}: No such file or directory.')
         sys.exit(1)
 
+def count_words(file_path):
+    '''Counts the number of words in the given file.'''
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return sum(len(line.split()) for line in file)
+    except FileNotFoundError:
+        print(f'python_wc_clone: {file_path}: No such file or directory.')
+        sys.exit(1)
+
 def main():
     #Argument parser setup.
     parser = argparse.ArgumentParser(description = 'python_wc_clone: word, line, character, and byte count.')
     parser.add_argument('-c', action='store_true', help='Count and print the number of bytes in a file.')
     parser.add_argument('-l', action='store_true', help='Count and print the number of lines in a file.')
+    parser.add_argument('-w', action='store_true', help='Count and print the number of words in a file.')
     parser.add_argument('file', nargs='?', help='Path to the file to process.')
 
     #Parse the arguments.
     args=parser.parse_args()
     file_input=args.file
+    
+    if not file_input:
+        print('Error: You must provide a file path.')
+        sys.exit(1)
+    
     #Initialize empty output.
     output=[]
 
     #Capture the order of arguments by using the command-line args directly.
     flags_in_order=sys.argv[1:-1]
 
-    if not file_input:
-        print('Error: You must provide a file path.')
-        sys.exit(1)
     
     #Process the arguments in the order provided by the user.
     for flag in flags_in_order:
@@ -49,6 +60,9 @@ def main():
         elif flag=='-l':
             line_count=count_lines(file_input)
             output.append(f'{line_count}')
+        elif flag=='-w':
+            word_count=count_words(file_input)
+            output.append(f'{word_count}')
     
     #Append the filename to the output.
     output.append(file_input)
@@ -56,6 +70,6 @@ def main():
     #Print result.
     print(' '.join(output))
 
+# Check whether script is being run as the main program, not when imported as a module elsewhere.
 if __name__=='__main__':
     main()
-# Checks whether script is being run as the main program, not when imported as a module elsewhere.
