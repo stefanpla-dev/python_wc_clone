@@ -56,3 +56,19 @@ def test_count_words():
     assert output==f'{expected_word_count} {temp_file_name}'
 
     os.remove(temp_file_name)
+
+def test_count_characters():
+    '''Test the -m option (character count).'''
+    with tempfile.NamedTemporaryFile(delete=False, mode='w') as temp_file:
+        temp_file.write('Hello world.\nThis is a test of character counting.')
+        temp_file_name=temp_file.name
+
+    result=subprocess.run(['python', 'src/wc.py', '-m', temp_file_name], capture_output=True, text=True)
+
+    output=result.stdout.strip()
+    expected_character_count=50
+
+    assert output==f'{expected_character_count} {temp_file_name}'
+
+    os.remove(temp_file_name)
+
