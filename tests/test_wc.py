@@ -100,3 +100,20 @@ def test_stdin_behavior():
 
     output=result.stdout.strip()
     assert output==f'{expected_byte_count} {expected_line_count} {expected_word_count} (stdin)'
+
+def test_flags_in_order_behavior():
+    '''Test that flag order from user input matches output.'''
+    with tempfile.NamedTemporaryFile(delete=False, mode='w') as temp_file:
+        temp_file.write('Hello world.\nThis is a test line.')
+        temp_file_name=temp_file.name
+
+    result=subprocess.run(['python', 'src/wc.py', '-l', '-m', '-w', temp_file_name], capture_output=True, text=True)
+    output=result.stdout.strip()
+
+    expected_line_count=2
+    expected_character_count=33
+    expected_word_count=7
+
+    assert output==f'{expected_line_count} {expected_character_count} {expected_word_count} {temp_file_name}'
+
+    os.remove(temp_file_name)
