@@ -1,42 +1,54 @@
 import argparse
 import sys
 
-def count_bytes(file_path):
+def count_bytes(file_path, from_stdin=False):
     '''Counts the number of bytes in a given file.'''
-    try:
-        with open(file_path, 'rb') as file: #Open in binary mode to count bytes accurately.
-            byte_content = file.read()
-            return len(byte_content)
-    except FileNotFoundError:
-        print(f'python_wc_clone: {file_path}: No such file or directory.')
-        sys.exit(1)
+    if from_stdin:
+        return len(file_path.encode('utf-8'))
+    else:
+        try:
+            with open(file_path, 'rb') as file: #Open in binary mode to count bytes accurately.
+                byte_content = file.read()
+                return len(byte_content)
+        except FileNotFoundError:
+            print(f'python_wc_clone: {file_path}: No such file or directory.')
+            sys.exit(1)
 
-def count_lines(file_path):
+def count_lines(file_path, from_stdin=False):
     '''Counts the number of lines in the given file.'''
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file: #Open in text mode to count lines.
-            return sum(1 for line in file)
-    except FileNotFoundError:
-        print(f'python_wc_clone: {file_path}: No such file or directory.')
-        sys.exit(1)
+    if from_stdin:
+        return sum(1 for line in file_path.splitlines())
+    else:
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file: #Open in text mode to count lines.
+                return sum(1 for line in file)
+        except FileNotFoundError:
+            print(f'python_wc_clone: {file_path}: No such file or directory.')
+            sys.exit(1)
 
-def count_words(file_path):
+def count_words(file_path, from_stdin=False):
     '''Counts the number of words in the given file.'''
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return sum(len(line.split()) for line in file)
-    except FileNotFoundError:
-        print(f'python_wc_clone: {file_path}: No such file or directory.')
-        sys.exit(1)
+    if from_stdin:
+        return sum(len(line.split()) for line in file_path.splitlines())
+    else:
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                return sum(len(line.split()) for line in file)
+        except FileNotFoundError:
+            print(f'python_wc_clone: {file_path}: No such file or directory.')
+            sys.exit(1)
 
-def count_characters(file_path):
+def count_characters(file_path, from_stdin=False):
     '''Count the number of characters in the given file.'''
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return sum(len(line) for line in file)
-    except FileNotFoundError:
-        print(f'python_wc_clone: {file_path}: No such file or directory.')
-        sys.exit(1)
+    if from_stdin:
+        return sum(len(line) for line in file_path.splitlines())
+    else:
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                return sum(len(line) for line in file)
+        except FileNotFoundError:
+            print(f'python_wc_clone: {file_path}: No such file or directory.')
+            sys.exit(1)
 
 def main():
     #Argument parser setup.
@@ -49,12 +61,12 @@ def main():
 
     #Parse the arguments.
     args=parser.parse_args()
-    file_input=args.file
     
-    if not file_input:
-        print('Error: You must provide a file path.')
-        sys.exit(1)
-
+    if not args.file:
+        file_input=sys.stdin.read()
+    else:
+        file_input=args.file
+    
     #Capture the flag order based on user input.
     flags_in_order=[arg for arg in sys.argv[1:-1] if arg in ['-c', '-l', '-w', '-m']]
 
@@ -68,20 +80,20 @@ def main():
     #Process the arguments in the order provided by the user.
     for flag in flags_in_order:
         if flag=='-c':
-            byte_count=count_bytes(file_input)
+            byte_count=count_bytes(file_input, from_stdin=(not args.file))
             output.append(f'{byte_count}')
         elif flag=='-l':
-            line_count=count_lines(file_input)
+            line_count=count_lines(file_input, from_stdin=(not args.file))
             output.append(f'{line_count}')
         elif flag=='-w': 
-            word_count=count_words(file_input)
+            word_count=count_words(file_input, from_stdin=(not args.file))
             output.append(f'{word_count}')
         elif flag=='-m':
-            character_count=count_characters(file_input)
+            character_count=count_characters(file_input, from_stdin=(not args.file))
             output.append(f'{character_count}')
     
     #Append the filename to the output.
-    output.append(file_input)
+    output.append('(stdin)' if not args.file else args.file)
 
     #Print result.
     print(' '.join(output))

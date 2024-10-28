@@ -2,12 +2,12 @@
 'python_wc_clone' is a Python command-line application that mimics the functionality of the Linux 'wc' command. It allows for the counting of bytes, lines, words, and characters in a given file, or from standard input.
 
 ## Features
-- Count bytes with the `-c` flag
-- Count lines with the `-l` flag
-- Count words with the `-w` flag
-- Count characters with the `-m` flag
-- Supports reading from standard input
-- Displays combined results when no flag is specified (default: lines, words, bytes)
+- Count bytes with the `-c` flag.
+- Count lines with the `-l` flag.
+- Count words with the `-w` flag.
+- Count characters with the `-m` flag.
+- Supports reading from standard input.
+- Displays combined results when no flag is specified (default: lines, words, bytes).
 
 ## Requirements
 - Python 3.6+

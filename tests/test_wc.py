@@ -88,3 +88,15 @@ def test_default_flag_behavior():
     assert output==f'{expected_byte_count} {expected_line_count} {expected_word_count} {temp_file_name}'
 
     os.remove(temp_file_name)
+
+def test_stdin_behavior():
+    '''Test behavior when reading from stdin.'''
+    input_text = 'Hello world\nThis is a test.\nStandard input.'
+    expected_byte_count=len(input_text.encode('utf-8'))
+    expected_line_count=3
+    expected_word_count=8
+
+    result = subprocess.run(['python', 'src/wc.py'], input=input_text, capture_output=True, text=True)
+
+    output=result.stdout.strip()
+    assert output==f'{expected_byte_count} {expected_line_count} {expected_word_count} (stdin)'
