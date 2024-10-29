@@ -1,5 +1,8 @@
 import argparse
 import sys
+import os
+from db import log_file_processing
+import time
 
 def count_bytes(file_path, from_stdin=False):
     '''Counts the number of bytes in a given file.'''
@@ -73,6 +76,9 @@ def main():
     #If no flags are provided, set default flags to -c, -l, -w.
     if not flags_in_order:
         flags_in_order=['-c', '-l', '-w']
+
+    # Track strat time to measure execution duration.
+    start_time = time.time()
     
     #Initialize empty output.
     output=[]
@@ -91,6 +97,20 @@ def main():
         elif flag=='-m':
             character_count=count_characters(file_input, from_stdin=(not args.file))
             output.append(f'{character_count}')
+
+    #Calculate the execution duration.
+    execution_duration=time.time() - start_time
+
+    #Insert the log entry into the database.
+    log_file_processing(
+        file_path=(file_input if args.file else '(stdin)'),
+        file_size=len(file_input) if not args.file else os.path.getsize(file_input),
+        line_count=line_count if 'line_count' in locals() else None,
+        word_count=word_count if 'word_count' in locals() else None,
+        character_count=character_count if 'character_count' in locals() else None,
+        byte_count=byte_count if 'byte_count' in locals() else None,
+        execution_duration=execution_duration,
+    )
     
     #Append the filename to the output.
     output.append('(stdin)' if not args.file else args.file)
