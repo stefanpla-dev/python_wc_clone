@@ -7,7 +7,7 @@ __pycache__/
 *.pyo
 
 # SQLite database file
-wc_results.db
+file_processing_log.db
 
 # Unit test cache
 *.pytest_cache/
