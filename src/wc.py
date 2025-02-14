@@ -24,7 +24,7 @@ def count_lines(file_path, from_stdin=False):
     else:
         try:
             with open(file_path, 'r', encoding='utf-8') as file: #Open in text mode to count lines.
-                return sum(1 for line in file)
+                return sum(1 for line in file) #Process line by line instead of loading the entire file into memory at once. 
         except FileNotFoundError:
             print(f'python_wc_clone: {file_path}: No such file or directory.')
             sys.exit(1)
@@ -36,7 +36,7 @@ def count_words(file_path, from_stdin=False):
     else:
         try:
             with open(file_path, 'r', encoding='utf-8') as file:
-                return sum(len(line.split()) for line in file)
+                return sum(len(line.split()) for line in file) 
         except FileNotFoundError:
             print(f'python_wc_clone: {file_path}: No such file or directory.')
             sys.exit(1)
