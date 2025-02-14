@@ -26,6 +26,8 @@ def test_count_bytes():
     #Clean up the temporary file.
     os.remove(temp_file_name)
 
+#Wash, Rinse, Repeat.
+
 def test_count_lines():
     '''Test the -l option (line count).'''
     with tempfile.NamedTemporaryFile(delete=False, mode='w') as temp_file:

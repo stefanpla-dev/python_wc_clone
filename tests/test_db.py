@@ -22,6 +22,7 @@ def text_log_file_processing():
 
     #Fetch all logs and verify the test entry.
     logs=fetch_all_logs()
+    #Ensure only one log created.
     assert len(logs)==1
     log=log[0]
     assert log[1]=='test_file.txt'
